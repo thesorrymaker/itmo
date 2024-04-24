@@ -1,0 +1,15 @@
+truncate table list_script_user cascade ;
+truncate table list_user_house cascade ;
+truncate table List_Action_Script cascade ;
+truncate table contact cascade ;
+truncate table schedule_script cascade ;
+truncate table Condition_script cascade ;
+truncate table script cascade ;
+truncate table action cascade ;
+truncate table furniture cascade;
+truncate table Room cascade ;
+truncate table House cascade ;
+truncate table address cascade ;
+truncate table Problem cascade ;
+truncate table Support_man cascade ;
+truncate table "user" cascade ;

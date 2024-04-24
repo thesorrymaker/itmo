@@ -1,0 +1,87 @@
+-- Inserting data into "user" table
+INSERT INTO "user" (id, password, gender, name, age) VALUES
+(1, 'password123', 'MAN', 'John Doe', 25),
+(2, 'securepass', 'WOMAN', 'Jane Smith', 30),
+(3, 'mypassword', 'MAN', 'Bob Johnson', 22);
+
+-- Inserting data into Support_man table
+INSERT INTO Support_man (id, password, name, is_free) VALUES
+(1, 'supportpass1', 'Support Person 1', true),
+(2, 'supportpass2', 'Support Person 2', true),
+(3, 'supportpass3', 'Support Person 3', false);
+
+-- Inserting data into Problem table
+INSERT INTO Problem (id, user_id, support_man_id, description, type) VALUES
+(1, 1, 1, 'UI issue', 'UI'),
+(2, 2, 2, 'Bug in application', 'BUGS'),
+(3, 3, 3, 'Script not working', 'SCRIPT');
+
+-- Inserting data into address table
+INSERT INTO address (id, country, city, street) VALUES
+(1, 'US', 'New York', '123 Main St'),
+(2, 'UK', 'London', '456 High St'),
+(3, 'CHINA', 'Beijing', '789 East St');
+
+-- Inserting data into House table
+INSERT INTO House (id, address_id, type) VALUES
+(1, 1, 'APARTMENTS'),
+(2, 2, 'VILLAS'),
+(3, 3, 'HIGH-END');
+
+-- Inserting data into Room table
+INSERT INTO Room (id, house_id, square, height, type, is_filled) VALUES
+(1, 1, 100.0, 3.0, 'KITCHEN', true),
+(2, 2, 200.0, 4.0, 'BEDROOM', false),
+(3, 3, 150.0, 3.5, 'BATHROOM', true);
+
+-- Inserting data into furniture table
+INSERT INTO furniture (room_id, manufacture, Available, type) VALUES
+(1, 'ABC Furniture', true, 'AIR_CONDITION'),
+(2, 'XYZ Furnishings', false, 'LIGHT'),
+(3, 'Home Appliances Co.', true, 'BATHTUB');
+
+-- Inserting data into action table
+INSERT INTO action (id, type_furniture, type, description) VALUES
+(1, 'AIR_CONDITION', 'SWITCH_ON', 'Turn on air conditioner'),
+(2, 'LIGHT', 'SWITCH_OFF', 'Turn off lights'),
+(3, 'BATHTUB', 'OPEN', 'Open bathtub water flow');
+
+-- Inserting data into script table
+INSERT INTO script (id, creator_name, type) VALUES
+(1, 'John Doe', 'CONDITIONAL'),
+(2, 'Jane Smith', 'SCHEDULE'),
+(3, 'Bob Johnson', 'CONDITIONAL');
+
+-- Inserting data into schedule_script table
+INSERT INTO schedule_script (script_id, start_time, end_time) VALUES
+(2, '08:00:00', '10:00:00'),
+(3, '12:00:00', '14:00:00');
+
+-- Inserting data into Condition_script table
+INSERT INTO Condition_script (script_id, condition) VALUES
+(1, 'Temperature > 25'),
+(3, 'Humidity < 30');
+
+-- Inserting data into contact table
+INSERT INTO contact (user_id, email, phone) VALUES
+(1, 'john.doe@example.com', '123-456-7890'),
+(2, 'jane.smith@example.com', '987-654-3210'),
+(3, 'bob.johnson@example.com', '555-123-4567');
+
+-- Inserting data into List_Action_Script table
+INSERT INTO List_Action_Script (script_id, action_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Inserting data into list_script_user table
+INSERT INTO list_script_user (script_id, user_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Inserting data into list_user_house table
+INSERT INTO list_user_house (user_id, house_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3);

@@ -1,0 +1,52 @@
+CREATE OR REPLACE FUNCTION new_problem() RETURNS TRIGGER AS $before_insert_problem_trigger$
+BEGIN
+    if ((select count(*) from problem where support_man_id = NEW.support_man_id and Problem.is_finished = false) >= 5) THEN
+        raise exception 'You cannot dispatch this problem to a busy support man';
+    ELSIF ((select count(*) from problem where support_man_id = NEW.support_man_id and Problem.is_finished = false) >= 4) THEN
+        update Support_man set is_free = false where Support_man.id = NEW.support_man_id;
+    end if;
+    Return NEW;
+end;
+$before_insert_problem_trigger$ LANGUAGE plpgsql;
+CREATE TRIGGER before_insert_problem_tri BEFORE INSERT ON Problem FOR EACH ROW EXECUTE PROCEDURE new_problem();
+
+CREATE OR REPLACE FUNCTION after_update_problem() RETURNS TRIGGER AS $after_update_problem_trigger$
+BEGIN
+    if((select count(*) from problem where support_man_id = new.support_man_id and Problem.is_finished = false)>=5) THEN
+        update Support_man set is_free = false where Support_man.id = NEW.support_man_id;
+    ELSIF((select count(*) from problem where support_man_id = new.support_man_id and Problem.is_finished = false)<5) then
+        update Support_man set is_free = TRUE where Support_man.id = NEW.support_man_id;
+    end if;
+    if((select count(*) from problem where support_man_id = old.support_man_id and Problem.is_finished = false)>=5) THEN
+        update Support_man set is_free = false where Support_man.id = old.support_man_id;
+    ELSIF((select count(*) from problem where support_man_id = old.support_man_id and Problem.is_finished = false)<5) then
+        update Support_man set is_free = TRUE where Support_man.id = old.support_man_id;
+    end if;
+    return new;
+end;
+$after_update_problem_trigger$ LANGUAGE plpgsql;
+
+CREATE TRIGGER after_update_problem_tri AFTER UPDATE ON Problem FOR EACH ROW EXECUTE PROCEDURE after_update_problem();
+
+CREATE OR REPLACE FUNCTION before_update_problem() RETURNS TRIGGER AS $before_update_problem_trigger$
+BEGIN
+    if((select count(*) from problem where support_man_id = new.support_man_id and Problem.is_finished = false)>=5  and new.is_finished = false) THEN
+        raise exception 'Dispatch a problem to a busy support man is forbidden';
+    end if;
+    return new;
+end;
+$before_update_problem_trigger$ LANGUAGE plpgsql;
+CREATE TRIGGER before_update_problem_tri BEFORE UPDATE ON Problem FOR EACH ROW EXECUTE PROCEDURE before_update_problem();
+
+
+CREATE OR REPLACE FUNCTION new_furniture() returnS TRIGGER AS $insert_furniture_trigger$
+BEGIN
+    IF ((select count(*) from furniture where room_id = new.room_id) >= 10) THEN
+        raise exception 'Room is filled.';
+    ELSIF ((select count(*) from furniture where room_id = new.room_id) >= 9) THEN
+        update room set is_filled = true where room.id = new.room_id;
+    end if;
+    Return new;
+end ;
+$insert_furniture_trigger$ LANGUAGE plpgsql;
+CREATE TRIGGER insert_furniture_tri BEFORE INSERT ON furniture FOR EACH ROW EXECUTE PROCEDURE new_furniture();
